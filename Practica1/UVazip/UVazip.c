@@ -20,11 +20,11 @@ int main(int argc, char *argv[]) {
 
 		do {
 			c = fgetc(fichero);
-			if (preC != '7' && c != preC) {
+			if (preC != '7' && c != preC && c != EOF) {
 		                fwrite(&cont, sizeof(int), 1, stdout);
 				printf("%c", preC);
 				cont = 1;
-			} else {
+			} else if (preC == c) {
 				cont++;
 			}
 			preC = c;
