@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
 	char c, preC = '_';
 
     if (argc == 1) {
-        printf("UVazip: file1 [file2 ...]\n");
+        printf("UVaunzip: file1 [file2 ...]\n");
         exit(1);
     }
 	while (i < argc) {
@@ -23,8 +23,6 @@ int main(int argc, char *argv[]) {
 		}
 		fclose(fichero);
 	}
-	fwrite(&cont, sizeof(int), 1, stdout);
-	printf("%c", preC);
 
 	return 0;
 }
