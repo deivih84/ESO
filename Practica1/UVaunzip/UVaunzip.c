@@ -3,8 +3,8 @@
 
 int main(int argc, char *argv[]) {
 	FILE *fichero;
-	int i = 1, cont = 1, num;
-	char c, preC = '_';
+	int i = 1, num;
+	char c;
 
     if (argc == 1) {
         printf("UVaunzip: file1 [file2 ...]\n");
