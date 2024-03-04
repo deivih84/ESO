@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <ctype.h>
 
 
@@ -57,7 +58,7 @@ int main(int argc, char *argv[]) {
 						printf("arg:%s\n", args[i]);	
 					}
 					printf("Se ejecutará con: %s y args en la salida %s\n", prog, redir);
-					if ((i = execvp(prog, args)) == -1) {
+					if (execvp(prog, args) == ) {
 						fprintf(stderr, "%s", error_message);
 					}
 				}
