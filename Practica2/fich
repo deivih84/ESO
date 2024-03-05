@@ -1,0 +1,13 @@
+prog:(ls)
+arg:(ls)
+prog:(ls)
+arg:(-l)
+Se ejecutará con: ls y -l en la salida fich
+total 75
+-rwxrwxrwx 0 deivih84 deivih84 12150 Mar  5 19:56 README.md
+-rwxrwxrwx 0 deivih84 deivih84 16632 Mar  6 00:01 UVash
+-rwxrwxrwx 0 deivih84 deivih84  2534 Mar  6 00:01 UVash.c
+-rwxrwxrwx 0 deivih84 deivih84 43477 Feb 28 23:07 UVash.exe
+-rwxrwxrwx 0 deivih84 deivih84    83 Mar  6 00:03 fich
+-rwxrwxrwx 0 deivih84 deivih84   136 Mar  5 19:56 test-UVash.sh
+drwxrwxrwx 0 deivih84 deivih84   512 Mar  5 19:56 tests

@@ -10,67 +10,80 @@
 
 
 int main(int argc, char *argv[]) {
-    	FILE *fichero;
-    	char *linea, *comando, *token, *redir, *prog;
+    	FILE *fich;
+    	char *linea, *comando, *token, *redir; //*prog;
     	char *pDel = "&", *sDel = ">", *tDel = " ";
 	char **args;
 	char error_message[30] = "An error has occurred\n";
 	int bandera = 1, i;
     	size_t tam = 255;	
-	
+	int fOut;	
 
 
-		linea = malloc(255*sizeof(char));
-		comando = malloc(128*sizeof(char));
-		token = malloc(64*sizeof(char));
-		args = malloc(8*16*sizeof(char));
+	linea = malloc(255*sizeof(char));
+	comando = malloc(128*sizeof(char));
+	token = malloc(64*sizeof(char));
+	args = malloc(8*16*sizeof(char));
 		
 	if (argc == 1) { // Modo interactivo (Lectura por teclado)
         	while (bandera) {
-            	printf("UVash> ");
-            	getline(&linea, &tam, stdin);
-				linea[strlen(linea)-1] = '\0';
+            		printf("UVash> ");
+            		getline(&linea, &tam, stdin);
+			linea[strlen(linea)-1] = '\0';
+			
+			if(strcmp("exit", linea) == 0){
+				break;
+			} // Detectar el exit
 				
-				if(strcmp("exit", linea) == 0){
-					break;
-				} // Detectar el exit
-				
+			// TODO Separar los comandos en diferentes forks y mirar
+			// bien las especificaciones con los comandos paralelos
 					
-				while((comando = strsep(&linea, pDel)) != NULL) { //Separador "&"
-					//printf("com:%s\n", comando);
+			while((comando = strsep(&linea, pDel)) != NULL) { //Separador "&"
+				//printf("com:%s\n", comando);
 					
-					// Separador ">"
-					token = strsep(&comando, sDel);
 					
-					if((redir = strsep(&comando, sDel)) != NULL){
-						printf("Se redirige a:%s\n", redir);
-					} else {
-						redir = "stdout";
-						printf("Se redirige a stdout\n");
-					}
-					//printf("tok:%s\n", token);
-					//TODO Utilizar el token principal para los argumentos y el secundario para la redirección.
-										
-					i = 0;
-					prog = strsep(&token, tDel);
-					while((args[i] = strsep(&token, tDel)) != NULL) { //Separador " "
+				// Separador ">"
+				token = strsep(&comando, sDel);
 					
-						printf("arg:%s\n", args[i]);	
-					}
-					printf("Se ejecutará con: %s y args en la salida %s\n", prog, redir);
-					if (execvp(prog, args) == ) {
+				if((redir = strsep(&comando, sDel)) != NULL){
+					printf("Se redirige a:%s\n", redir);
+					if ((fich = fopen(redir, "w")) == NULL) {
 						fprintf(stderr, "%s", error_message);
 					}
+					fOut = fileno(fich);
+						
+					dup2(fOut, 1);
+					dup2(fOut, 2);
+				} else {
+					redir = "stdout";
+					printf("Se redirige a stdout\n");
 				}
-				// Ejecutar con args y redireccionar al segundo token, (si no hay, pasar por stdout)
+				//TODO Utilizar el token principal para los argumentos y el secundario para la redirección.
+										
+				i = 0;
+				while((args[i] = strsep(&token, tDel)) != NULL) { //Separador " "
+					printf("prog:(%s)\n", args[0]);
+					printf("arg:(%s)\n", args[i]);
+					i++;
+				}
+				printf("Se ejecutará con: %s y %s en la salida %s\n", args[0], args[1], redir);
+					
+				if (execvp(args[0], args) == -1) {
+					fprintf(stderr, "%s", error_message);
+				}
+					
+				// TODO cerrar el fichero fout
+					
 			}
-	} else if (argc == 2) { // Modo batch (lectura desde fichero)
-		if ((fichero = fopen(argv[1], "r")) == NULL) {
-				fprintf(stderr, "%s", error_message);
-				exit(1);
+			// Ejecutar con args y redireccionar al segundo token, (si no hay, pasar por stdout)
 		}
-        	while((getline(&linea, &tam, fichero)) != -1) {
-        	//TODO leer todo el fichero en busca de comandos
+	} else if (argc == 2) { // Modo batch (lectura desde fichero)
+		if ((fich = fopen(argv[1], "r")) == NULL) {
+			fprintf(stderr, "%s", error_message);
+			exit(1);
+		}
+        	while((getline(&linea, &tam, fich)) != -1) {
+        		//TODO leer todo el fichero en busca de comandos
         	}
    	} else {
 		fprintf(stderr, "%s", error_message);
@@ -82,7 +95,6 @@ int main(int argc, char *argv[]) {
 	free(token);
 	free(args);
 	
-	
-    return 0;
+	return 0;
 }
 
