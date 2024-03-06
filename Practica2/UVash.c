@@ -17,11 +17,12 @@ int main(int argc, char *argv[]) {
 	char error_message[30] = "An error has occurred\n";
 	int bandera = 1, i;
     	size_t tam = 255;	
-	int fOut;	
+	int fOut;
+	//pid_t id;
 
 
 	linea = malloc(255*sizeof(char));
-	comando = malloc(128*sizeof(char));
+	comando = malloc(16*256*sizeof(char)); // Espacio 16 comandos, 256 por cada uno. DE SOBRA :)
 	token = malloc(64*sizeof(char));
 	args = malloc(8*16*sizeof(char));
 		
@@ -40,36 +41,48 @@ int main(int argc, char *argv[]) {
 					
 			while((comando = strsep(&linea, pDel)) != NULL) { //Separador "&"
 				//printf("com:%s\n", comando);
-					
+				
+				//j++;
+			//}	
 					
 				// Separador ">"
 				token = strsep(&comando, sDel);
-					
+				////////////////////////////////////////////
+//				id = fork();
+				////////////////////////////////////////////
 				if((redir = strsep(&comando, sDel)) != NULL){
-					printf("Se redirige a:%s\n", redir);
+					printf("Se redirige a:%s\n", redir); // Debug
+					if (redir[0] == ' ') for (int i = 0; i < strlen(redir); i++) redir[i] = redir[i+1];
+					
+					printf("__%s__", redir);
 					if ((fich = fopen(redir, "w")) == NULL) {
-						fprintf(stderr, "%s", error_message);
+						fprintf(stderr, "%s1", error_message);
 					}
+
+					// Para la redirección de los programas
 					fOut = fileno(fich);
-						
 					dup2(fOut, 1);
 					dup2(fOut, 2);
+
 				} else {
 					redir = "stdout";
-					printf("Se redirige a stdout\n");
+					printf("Se redirige por la salida normal\n");
 				}
-				//TODO Utilizar el token principal para los argumentos y el secundario para la redirección.
 										
 				i = 0;
 				while((args[i] = strsep(&token, tDel)) != NULL) { //Separador " "
+					if (strcmp(args[i], "") == 0) {
+						args[i] = NULL;
+					} else {
 					printf("prog:(%s)\n", args[0]);
 					printf("arg:(%s)\n", args[i]);
 					i++;
+					}
 				}
 				printf("Se ejecutará con: %s y %s en la salida %s\n", args[0], args[1], redir);
 					
 				if (execvp(args[0], args) == -1) {
-					fprintf(stderr, "%s", error_message);
+					fprintf(stderr, "%s2", error_message);
 				}
 					
 				// TODO cerrar el fichero fout
@@ -79,7 +92,7 @@ int main(int argc, char *argv[]) {
 		}
 	} else if (argc == 2) { // Modo batch (lectura desde fichero)
 		if ((fich = fopen(argv[1], "r")) == NULL) {
-			fprintf(stderr, "%s", error_message);
+			fprintf(stderr, "%s3", error_message);
 			exit(1);
 		}
         	while((getline(&linea, &tam, fich)) != -1) {
