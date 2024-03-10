@@ -1,0 +1,15 @@
+__output__prog:(ls)
+arg:(ls)
+prog:(ls)
+arg:(-l)
+Se ejecutará con: ls y -l en la salida output
+total 77
+-rwxrwxrwx 0 deivih84 deivih84 12150 Mar  5 19:56 README.md
+-rwxrwxrwx 0 deivih84 deivih84 16656 Mar 10 21:30 UVash
+-rwxrwxrwx 0 deivih84 deivih84  3000 Mar 10 17:20 UVash.c
+-rwxrwxrwx 0 deivih84 deivih84 43477 Feb 28 23:07 UVash.exe
+-rwxrwxrwx 0 deivih84 deivih84   501 Mar  6 00:03 fich
+-rwxrwxrwx 0 deivih84 deivih84   581 Mar 10 17:20 forkPrueba.c
+-rwxrwxrwx 0 deivih84 deivih84    95 Mar 10 21:31 output
+-rwxrwxrwx 0 deivih84 deivih84   136 Mar  5 19:56 test-UVash.sh
+drwxrwxrwx 0 deivih84 deivih84   512 Mar  5 19:56 tests
