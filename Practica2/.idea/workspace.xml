@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
@@ -7,8 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="37c9de24-3f94-4e9e-9a14-ab8fe5fe1637" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Practica2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Practica2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UVash" beforeDir="false" afterPath="$PROJECT_DIR$/UVash" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UVash.c" beforeDir="false" afterPath="$PROJECT_DIR$/UVash.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fich" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output" beforeDir="false" afterPath="$PROJECT_DIR$/output" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,9 +36,9 @@
     <option name="majorVersion" value="2023" />
     <option name="minorVersion" value="3.1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2dWD2rtrigAkSsahMzwcL5DFpkR" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -39,6 +46,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "C/C++ File.UVash.c.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
@@ -46,10 +54,22 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="UVash.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Practica2" TARGET_NAME="UVash.c" CONFIG_NAME="UVash.c">
+      <option name="sourceFile" value="UVash.c" />
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -59,6 +79,7 @@
       <option name="presentableId" value="Default" />
       <updated>1710114738859</updated>
       <workItem from="1710114740569" duration="14000" />
+      <workItem from="1710186011142" duration="9504000" />
     </task>
     <servers />
   </component>
