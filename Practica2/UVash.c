@@ -27,7 +27,15 @@ int main(int argc, char *argv[]) {
     token = malloc(64 * sizeof(char));
     args = malloc(8 * 16 * sizeof(char));
 
-    if (argc == 1) { // Modo interactivo (Lectura por teclado)
+	if (argc == 2) { // Modo batch (lectura desde fichero)
+        if ((fich = fopen(argv[1], "r")) == NULL) {
+            fprintf(stderr, "%s3", error_message);
+            exit(1);
+        }
+        while ((getline(&linea, &tam, fich)) != -1) {
+            //TODO leer todo el fichero en busca de comandos
+        }
+    } else if (argc == 1) {		
         while (bandera) {
             printf("UVash> ");
             getline(&linea, &tam, stdin);
@@ -92,17 +100,10 @@ int main(int argc, char *argv[]) {
 
             }
         }
-    } else if (argc == 2) { // Modo batch (lectura desde fichero)
-        if ((fich = fopen(argv[1], "r")) == NULL) {
-            fprintf(stderr, "%s3", error_message);
-            exit(1);
-        }
-        while ((getline(&linea, &tam, fich)) != -1) {
-            //TODO leer todo el fichero en busca de comandos
-        }
-    } else {
+		} else {
         fprintf(stderr, "%s", error_message);
     }
+
 
 
     free(linea);
