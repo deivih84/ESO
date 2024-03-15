@@ -23,9 +23,9 @@ int main(int argc, char *argv[]) {
     char *linea, *comandos, *token, *redir; //*prog;
     char **args;
     char error_message[30] = "An error has occurred\n";
-    int bandera = 1, itArgumentos, contComandos = 0; // j = 0;
+    int bandera = 1, itArgumentos, contComandos = 0, batch; // j = 0;
     size_t tam = 255;
-    //int fOut;
+
     pid_t pid;
 
 
@@ -34,74 +34,76 @@ int main(int argc, char *argv[]) {
     token = malloc(64 * sizeof(char));
     args = malloc(8 * 128 * sizeof(char));
 
-    if (argc == 2) { // Modo batch (lectura desde fichero)
+    if (argc == 2) { //                                                     ---MODO BATCH---
         if ((fich = fopen(argv[1], "r")) == NULL) {
             fprintf(stderr, "%s", error_message);
             exit(1);
         }
-        while ((getline(&linea, &tam, fich)) != -1) {
-            //TODO leer todo el fichero en busca de comandos
-        }
-    } else if (argc == 1) {
-        while (bandera) {
-            //printf("\033[1m\033[38;2;255;87;51mUVash> \033[0m"); 
-            printf("UVash> "); // Para pasar los tests
-            getline(&linea, &tam, stdin);
-            linea[strlen(linea) - 1] = '\0';
 
-            contComandos = 0;
-            while ((comandos = strsep(&linea, "&")) != NULL) { //Separador de __COMANDOS__
+        batch = 1;
+    } else if (argc == 1) { //                                            ---MODO INTERACTIVO---
+        fich = stdin;
+        batch = 0;
+    } else { // ERROR CATASTRÓFICO
+        fprintf(stderr, "%s", error_message);
+    }
 
-                token = strsep(&comandos, ">");
-                redir = strsep(&comandos, ">");
+    while (bandera) {
+//        printf("\033[1m\033[38;2;255;87;51mUVash> \033[0m");
+        if (!batch) printf("UVash> "); // Para pasar los tests
+        getline(&linea, &tam, fich);
 
-                itArgumentos = 0; // Iterador de argumentos
-                while ((args[itArgumentos] = strsep(&token, " ")) != NULL) { //Separador de __ARGUMENTOS__
-                    trim(args[itArgumentos]);
-                    if (strcmp(args[itArgumentos], "") == 0) {
-                        args[itArgumentos] = NULL;
-                    } else {
-                        itArgumentos++; // Avanza porfa
-                    }
-                }
-                //printf("Se ejecutará con: %s y %s en la salida %s\n", args[0], args[1], redir);
+//        printf("%s", linea);
 
-                if (strcmp("exit", args[0]) == 0) { // ------------EXIT??😎
-                    printf("Acaba el programa %d\n", getpid());
-                    exit(0);
-                } else if (strcmp("cd", args[0]) == 0) { // ------------CD??😎
-//                    nArgs = 0;
-//                    while (args[argc] != NULL) trim(args[argc++]);
-                    if (args[1] == NULL || args[2] != NULL) { // argc será al menos 1 siempre (== 0)
-                        fprintf(stderr, "An error has occurredARGUSDE CE,DE\n");
-                    } else if (chdir(args[1]) == -1) fprintf(stderr, "An error has occurred, En cd\n"); // Hacer cd
+        linea[strlen(linea) - 1] = '\0';
+
+        contComandos = 0;
+        while ((comandos = strsep(&linea, "&")) != NULL) { //Separador de __COMANDOS__
+
+            token = strsep(&comandos, ">");
+            redir = strsep(&comandos, ">");
+
+            itArgumentos = 0; // Iterador de argumentos
+            while ((args[itArgumentos] = strsep(&token, " ")) != NULL) { //Separador de __ARGUMENTOS__
+                trim(args[itArgumentos]);
+                if (strcmp(args[itArgumentos], "") == 0) {
+                    args[itArgumentos] = NULL;
                 } else {
-                    if (getpid() != 0) { // SOY PADRE🧐
-                        pid = fork(); // PE I DE
-                        printf("Soy %d y padre\n", pid);
-                        contComandos++;
-                    }
+                    itArgumentos++; // Avanza porfa
+                }
+            }
+            //printf("Se ejecutará con: %s y %s en la salida %s\n", args[0], args[1], redir);
 
-                    if (pid == 0) {
-                        bandera = ejecutar(args, redir);
-                    }
+            if (strcmp("exit", args[0]) == 0) { // ------------EXIT??😎
+//                printf("Acaba el programa %d\n", getpid());
+                exit(0);
+            } else if (strcmp("cd", args[0]) == 0) { // ------------CD??😎
+                if (args[1] == NULL || args[2] != NULL) { // argc será al menos 1 siempre (== 0)
+                    fprintf(stderr, "An error has occurred\n");
+                } else if (chdir(args[1]) == -1) fprintf(stderr, "An error has occurred\n"); // Hacer cd
+            } else {
+                if (getpid() != 0) { // SOY PADRE🧐
+                    pid = fork(); // PE I DE
+                    contComandos++;
                 }
 
-
-                // TODO cerrar el fichero fout
-                // Ejecutar con args y redireccionar al segundo token, (si no hay, pasar por stdout)
+                if (pid == 0) {
+                    bandera = ejecutar(args, redir);
+                }
             }
 
-            if (pid != 0)
-                for (int j = 0; j < contComandos; ++j) { // ESPERAR COMANDOS PARALELOS 😗
-                    printf("A MIMIR:%d_%d_\n", j, pid);
 
-                    wait(NULL);
-                }
-            //printf("__%d__", bandera);
+            // TODO cerrar el fichero fout
+            // Ejecutar con args y redireccionar al segundo token, (si no hay, pasar por stdout)
         }
-    } else {
-        fprintf(stderr, "%s", error_message);
+
+        if (pid != 0)
+            for (int j = 0; j < contComandos; ++j) { // ESPERAR COMANDOS PARALELOS 😗
+//                    printf("A MIMIR:%d_%d_\n", j, pid);
+
+                wait(NULL);
+            }
+        //printf("__%d__", bandera);
     }
 
 
@@ -121,7 +123,7 @@ int ejecutar(char *args[], char *redir) {
         trim(redir);
 
         if ((fOut = open(redir, O_WRONLY | O_CREAT | O_TRUNC, 0666)) == -1) {
-            fprintf(stderr, "An error has occurredABRIR\n");
+            fprintf(stderr, "An error has occurred\n");
         }
 
         // Para la redirección de los programas
@@ -130,13 +132,12 @@ int ejecutar(char *args[], char *redir) {
     }
 
     if (execvp(args[0], args) == -1) { // Ejecución argumento normal
-        fprintf(stderr, "An error has occurredEJEC\n");
+        fprintf(stderr, "An error has occurred\n");
     }
 
 
     return 0; // Si hay errores NO se continua :)
 }
-
 
 void trim(char *cad) {
     while (cad[0] == ' ' || cad[0] == '\t')
