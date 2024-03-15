@@ -1,6 +1,0 @@
-prog:(ls)
-arg:(ls)
-prog:(ls)
-arg:()
-Se ejecutará con: ls y  en la salida  output
-ls: cannot access '': No such file or directory
