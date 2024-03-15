@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="UVash" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" WORKING_DIR="file://$PROJECT_DIR$/Practica2" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Prácticas" TARGET_NAME="UVash.c" CONFIG_NAME="UVash">
+    <option name="compilerOptions" value="-Wall -Werror -pedantic" />
+    <option name="sourceFile" value="D:\Mi unidad\Uni\2º\2º Cuatri\ESO\Prácticas\Practica2\UVash.c" />
+    <method v="2">
+      <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+    </method>
+  </configuration>
+</component>

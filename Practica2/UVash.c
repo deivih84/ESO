@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
 
 
     linea = malloc(255 * sizeof(char));
-    comandos = malloc(255 * sizeof(char *)); // Espacio 16 comandos, 255 por cada uno. DE SOBRA :)
+    comandos = malloc(255 * sizeof(char)); // Espacio 16 comandos, 255 por cada uno. DE SOBRA :)
     token = malloc(64 * sizeof(char));
     args = malloc(8 * 128 * sizeof(char));
 
@@ -49,8 +49,8 @@ int main(int argc, char *argv[]) {
     }
 
     while (bandera) {
-//        printf("\033[1m\033[38;2;255;87;51mUVash> \033[0m");
-        if (!batch) printf("UVash> "); // Para pasar los tests
+        if (!batch) printf("\033[1m\033[38;2;255;87;51mUVash> \033[0m");
+//        if (!batch) printf("UVash> "); // Para pasar los tests
         getline(&linea, &tam, fich);
 
 //        printf("%s", linea);
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
                 exit(0);
             } else if (strcmp("cd", args[0]) == 0) { // ------------CD??😎
                 if (args[1] == NULL || args[2] != NULL) { // argc será al menos 1 siempre (== 0)
-                    fprintf(stderr, "An error has occurred\n");
+                    fprintf(stderr, "%s", error_message);
                 } else if (chdir(args[1]) == -1) fprintf(stderr, "An error has occurred\n"); // Hacer cd
             } else {
                 if (getpid() != 0) { // SOY PADRE🧐
@@ -91,10 +91,6 @@ int main(int argc, char *argv[]) {
                     bandera = ejecutar(args, redir);
                 }
             }
-
-
-            // TODO cerrar el fichero fout
-            // Ejecutar con args y redireccionar al segundo token, (si no hay, pasar por stdout)
         }
 
         if (pid != 0)
@@ -107,6 +103,7 @@ int main(int argc, char *argv[]) {
     }
 
 
+    if (argc == 2) fclose(fich);
     free(linea);
     free(comandos);
     free(token);
@@ -136,6 +133,7 @@ int ejecutar(char *args[], char *redir) {
     }
 
 
+    if (redir != NULL) close(fOut);
     return 0; // Si hay errores NO se continua :)
 }
 
