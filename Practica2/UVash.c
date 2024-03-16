@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
         if (!batch) printf("\033[1m\033[38;2;255;87;51mUVash> \033[0m");
 //        if (!batch) printf("UVash> "); // Para pasar los tests
         getline(&linea, &tam, fich);
+        if (batch && linea == NULL) exit(0); /////////////////////////////////////////////
 
 //        printf("%s", linea);
 
@@ -74,21 +75,23 @@ int main(int argc, char *argv[]) {
             }
             //printf("Se ejecutará con: %s y %s en la salida %s\n", args[0], args[1], redir);
 
-            if (strcmp("exit", args[0]) == 0) { // ------------EXIT??😎
+            if (args[0] != NULL) {
+                if (strcmp("exit", args[0]) == 0) { // ------------EXIT??😎
 //                printf("Acaba el programa %d\n", getpid());
-                exit(0);
-            } else if (strcmp("cd", args[0]) == 0) { // ------------CD??😎
-                if (args[1] == NULL || args[2] != NULL) { // argc será al menos 1 siempre (== 0)
-                    fprintf(stderr, "%s", error_message);
-                } else if (chdir(args[1]) == -1) fprintf(stderr, "An error has occurred\n"); // Hacer cd
-            } else {
-                if (getpid() != 0) { // SOY PADRE🧐
-                    pid = fork(); // PE I DE
-                    contComandos++;
-                }
+                    exit(0);
+                } else if (strcmp("cd", args[0]) == 0) { // ------------CD??😎
+                    if (args[1] == NULL || args[2] != NULL) { // argc será al menos 1 siempre (== 0)
+                        fprintf(stderr, "%s", error_message);
+                    } else if (chdir(args[1]) == -1) fprintf(stderr, "An error has occurred\n"); // Hacer cd
+                } else {
+                    if (getpid() != 0) { // SOY PADRE🧐
+                        pid = fork(); // PE I DE
+                        contComandos++;
+                    }
 
-                if (pid == 0) {
-                    bandera = ejecutar(args, redir);
+                    if (pid == 0) {
+                        bandera = ejecutar(args, redir);
+                    }
                 }
             }
         }
@@ -138,9 +141,11 @@ int ejecutar(char *args[], char *redir) {
 }
 
 void trim(char *cad) {
-    while (cad[0] == ' ' || cad[0] == '\t')
-        for (int j = 0; j < strlen(cad); j++)
-            cad[j] = cad[j + 1];
-    while (cad[strlen(cad) - 1] == ' ' || cad[strlen(cad) - 1] == '\t')
-        cad[strlen(cad) - 1] = '\0';
+    if (cad != NULL) {
+        while (cad[0] == ' ' || cad[0] == '\t')
+            for (int j = 0; j < strlen(cad); j++)
+                cad[j] = cad[j + 1];
+        while (cad[strlen(cad) - 1] == ' ' || cad[strlen(cad) - 1] == '\t')
+            cad[strlen(cad) - 1] = '\0';
+    }
 }
